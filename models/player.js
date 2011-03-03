@@ -1,6 +1,6 @@
 /**
 */
-$.Model.extend('Nextcard.Models.Player',
+$.Class.extend('Nextcard.Models.Player',
 /* @Static */
 {
 },
@@ -11,21 +11,30 @@ $.Model.extend('Nextcard.Models.Player',
 	init: function (a_name) {
 		this.m_score = 0;
 		this.m_name = a_name;
+		this.m_isActive = false;
 	},
 	
 	UpdateScore: function(a_points) {
-		return "not implemented";
+		this.m_score += a_points;
 	},
 	
 	GetScore: function() {
-		return "not implemented";
+		return this.m_score;
 	},
 	
 	GetName: function() {
-		return "not implemented";
+		return this.m_name;
 	},
 	
 	ResetScore: function() {
 		return "not implemented";
+	},
+	
+	SetActive: function(a_active) {
+		this.m_isActive = a_active;
+	},
+	
+	IsActive: function() {
+		return this.m_isActive === true;
 	}
 });

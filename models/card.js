@@ -1,6 +1,6 @@
 /**
 */
-$.Model.extend('Nextcard.Models.Card',
+$.Class.extend('Nextcard.Models.Card',
 /* @Static */
 {
 },
@@ -14,10 +14,10 @@ $.Model.extend('Nextcard.Models.Card',
 	},
 	
 	GetValue: function() {
-		return "not implemented";
+		return this.m_value;
 	},
 	
 	GetColor: function() {
-		return "not implemented";
+		return this.m_color;
 	}
 });

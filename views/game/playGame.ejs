@@ -1,0 +1,24 @@
+<div id="cardDiv">
+	<%= $.View('//nextcard/views/game/showCard',{card: card})%>
+</div>
+
+<div id="cardsLeftDiv">
+	<%= $.View('//nextcard/views/game/showCardsLeft',{cardsLeft: cardsLeft})%>
+</div>
+
+<div id="pointsDiv">
+	Points: 
+</div>
+
+<div id="playersDiv">
+	<%= $.View('//nextcard/views/game/showPlayers',{players: players})%>
+</div>
+
+<button type="button" id="listCards">List cards</button>
+<button type="button" id="over">Over</button>
+<button type="button" id="under">Under</button>
+
+<br /><br />
+
+<button type="button" id="restart">Restart</button>
+<button type="button" id="quit">Quit to menu</button>

@@ -1,0 +1,12 @@
+<table>
+	<% for (var i = 0, j = players.length ; i < j ; i++) {%>
+		<tr>
+			<td class='<% if(players[i].IsActive()){%>active<%} else {%>inactive<%}%>'>
+				<%= players[i].GetName()%>
+			</td>
+			<td>
+				Score: <%= players[i].GetScore()%>
+			</td>
+		</tr>
+	<%}%>
+</table>

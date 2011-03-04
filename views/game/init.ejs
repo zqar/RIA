@@ -1,0 +1,18 @@
+Choose number of players:
+<br />
+<input type="radio" name="players" value="1" id="select1player" class="selectPlayers" checked="checked" /><label for="select1player">1 Players</label>
+<br />
+<input type="radio" name="players" value="2" id="select2players" class="selectPlayers" /><label for="select2players">2 Players</label>
+<br />
+<input type="radio" name="players" value="3" id="select3players" class="selectPlayers" /><label for="select3players">3 Players</label>
+<br /><br />
+Choose player names:
+<div id="playerInputDiv">
+	<%= $.View('//nextcard/views/game/inputPlayers',{noOfPlayers: 1})%>
+</div>
+
+<div>
+	<button type="button" id="startGame">Start Game</button>
+</div>
+
+

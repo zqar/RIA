@@ -1,5 +1,7 @@
 /**
-*/
+ * @tag models, home
+ * Modellklass som innehåller en kortlek i form av card-objekt
+ */
 $.Model.extend('Nextcard.Models.Deck',
 /* @Static */
 {
@@ -7,7 +9,9 @@ $.Model.extend('Nextcard.Models.Deck',
 /* @Prototype */
 {
 
-	//Konstruktor
+	/**
+ 	 * Konstruktor för klassen, skapar en komplett kortlek beståendes av 52 card-objekt som blandas
+ 	 */
 	init: function () {
 		this.m_cards = [];
 		var colors = ["h", "s", "c", "d"]
@@ -28,32 +32,40 @@ $.Model.extend('Nextcard.Models.Deck',
 		return "not implemented";
 	},
 	
-	//Blanda korten många ggr
+	/**
+ 	 * Funktion för att blanda korten i kortleken
+ 	 */
 	Shuffle: function() {
-		for (var i = 0 ; i < 100 ; i++) {
-			//random nr
+		for (var i = 0 ; i < 1000 ; i++) {
+			//generera ett slumptal mellan 0-51
 			var randomNumber=Math.floor(Math.random()*52);
-			console.log(randomNumber);
-			//spara kortet och ta bort
+			
+			//spara undan det slumpade kortet, ta ur det från leken och lägg det sist i leken
 			var card = this.m_cards[randomNumber];
 			this.m_cards.splice(randomNumber, 1);
-			console.log(card.m_color + card.m_value);
-			//lägg till kortet sist i leken
 			this.m_cards.push(card);
-			console.log(this.m_cards[51].m_color + this.m_cards[51].m_value)
 		}
 	},
 	
+	/**
+ 	 * Funktion för att hämta det översta kortet
+ 	 */
 	GetNextCard: function() {
 		console.log("hämta kortet " + this.m_cards[this.m_cards.length-1].m_color + this.m_cards[this.m_cards.length-1].m_value);//GetValue);
 		return this.m_cards[this.m_cards.length-1];
 	},
 	
+	/**
+ 	 * Funktion för att ta bort det översta kortet
+ 	 */
 	RemoveNextCard: function() {
 		console.log("Tar bort kortet " + this.m_cards[this.m_cards.length-1].m_color + this.m_cards[this.m_cards.length-1].m_value);
 		this.m_cards.splice(this.m_cards.length-1, 1);
 	},
 	
+	/**
+ 	 * Funktion för att hämta antalet kort som finns kvar i kortleken
+ 	 */
 	GetCardsLeft: function() {
 		return this.m_cards.length;
 	}

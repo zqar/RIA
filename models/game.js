@@ -1,5 +1,7 @@
 /**
-*/
+ * @tag models, home
+ * Modellklass som hanterar ett spel
+ */
 $.Model.extend('Nextcard.Models.Game',
 /* @Static */
 {
@@ -7,32 +9,30 @@ $.Model.extend('Nextcard.Models.Game',
 /* @Prototype */
 {
 
-	//Konstruktor
-	init: function (a_players) {
+	/**
+ 	 * Konstruktor för klassen
+ 	 * @param {Array} a_players En array som innehåller spelarnas namn
+ 	 * @param {Boolean} a_switchIfCorrect Sätter om turordningen skiftar efter varje gissning eller vid fel gissning
+ 	 */
+	init: function (a_players, a_switchIfCorrect) {
 		//Kalla på this.ResetDeck() som skapar en ny kortlek och sparar undan den
-	    this.m_deck = new Nextcard.Models.Deck();
+	    this.m_deck = new Nextcard.Models.Deck(); //Tillfällig lösning, ändra sen
 		this.m_currentPlayer = 0;
 		this.m_players = [];
-		
-		//this.m_players.push("ett");
-		//this.m_players.push(new Nextcard.Models.Player("två"));
-		//this.m_playera = new Nextcard.Models.Player("hej");
-		//this.m_players[1] = new Nextcard.Models.Player(a_players[0]);
+		this.m_switchIfCorrect = a_switchIfCorrect;
 		
 		//Skapa Player-objekt
 		for (var i = 0, j = a_players.length ; i < j ; i++) {
 			this.m_players[i] = new Nextcard.Models.Player(a_players[i]);
-			console.log(this.m_players[i].m_name + " skapad"); //logging
+			console.log("player " + this.m_players[i].GetName() + " skapad"); //logging
 		}
+		
+		//Sätt första spelaren som aktuell spelare
 		this.m_players[this.m_currentPlayer].SetActive(true);
 		
-		//alert(this.m_players[this.m_currentPlayer].m_name);
-		//this.m_players = "not implemented";
-		
-		//alert(this.m_players[0]);
 	},
 	
-	//Varför skapas en ny Deck när denna funktionen finns, men ej körs?
+	//Varför skapas en ny Deck när denna funktionen läses in (ej anropas)?
 	ResetDeck: function() {
 		//return new Nextcard.Models.Deck();
 	},
@@ -41,8 +41,12 @@ $.Model.extend('Nextcard.Models.Game',
 		return "not implemented";
 	},
 	
-	//Funktion för en gissning
+	/**
+ 	 * Funktion för en gissning
+ 	 * @param {String} a_direction Spelarens gissning (over/under)
+ 	 */
 	Select: function(a_direction) {
+		//Hämtar och tar bort kort, samt räknar ut poängen för gissningen
 		var card1 = this.m_deck.GetNextCard();
 		
 		this.m_deck.RemoveNextCard();
@@ -51,14 +55,20 @@ $.Model.extend('Nextcard.Models.Game',
 		
 		var points = this.CalcScore(card1.GetValue(), card2.GetValue(), a_direction)
 		
+		//Uppdatera poängen och sätter aktuell spelare
 		this.m_players[this.m_currentPlayer].UpdateScore(points);
 		
-		this.SetNextPlayer();
+		this.SetNextPlayer(points);
 		
 		return points;
 	},
 	
-	//Räknar ut hur många poäng en gissning ger
+	/**
+ 	 * Funktion som räknar ut hur många poäng en gissning ger
+ 	 * @param {String} a_nextCardValue Det aktuella kortets värde
+ 	 * @param {String} a_secondCardValue Nästkommande kortets värde
+ 	 * @param {String} a_direction Spelarens gissning (over/under)
+ 	 */
 	CalcScore: function(a_nextCardValue, a_secondCardValue, a_direction) {
 		var score = 0;
 		//Fel gissning
@@ -75,28 +85,49 @@ $.Model.extend('Nextcard.Models.Game',
 		return score;
 	},
 	
-	//Funktion som sätter vilken spelares tur det är
-	//Fixa till bättre logik här sen (interface för olika regler?)
-	SetNextPlayer: function() {
-		for (var i = 0, j = this.m_players.length ; i < j ; i++) {
-			this.m_players[i].SetActive(false);
+	/**
+ 	 * Funktion som sätter vilken spelares tur det är nästa gång
+ 	 * @param {Number} a_points Antalet poäng som spelaren fick för sin gissning
+ 	 */
+	SetNextPlayer: function(a_points) {
+		
+		//Gör inget om spelaren gissade rätt och m_switchIfCorrect == false...
+		if (a_points > 0 && this.m_switchIfCorrect === false) {
+			return;
 		}
-		if (this.m_currentPlayer === 0) {
-			this.m_currentPlayer = 1;
-		} else {
-			this.m_currentPlayer = 0;
+		
+		//...annars blir det nästa spelares tur
+		var nextPlayerIndex = this.m_currentPlayer + 1;
+		
+		if (nextPlayerIndex == this.m_players.length) {
+			nextPlayerIndex = 0;
 		}
-		this.m_players[this.m_currentPlayer].SetActive(true);
+		
+		this.m_players[this.m_currentPlayer].SetActive(false);
+		this.m_players[nextPlayerIndex].SetActive(true);
+		
+		this.m_currentPlayer = nextPlayerIndex;
+		
 	},
 	
+	/**
+ 	 * Hämtar antalet kort som finns kvar i kortleken
+ 	 */
 	GetCardsLeft: function() {
 		return this.m_deck.GetCardsLeft();
 	},
 	
+	/**
+ 	 * Hämtar antalet kort som finns kvar i kortleken
+ 	 */
 	GetNextCard: function() {
 		return this.m_deck.GetNextCard();
 	},
 	
+	/**
+ 	 * Hämtar ett player-objekt
+ 	 * @param {Number} a_index Indexet för spelaren som ska hämtas
+ 	 */
 	GetPlayer: function(a_index) {
 		return this.m_players[a_index];
 	},
@@ -105,6 +136,9 @@ $.Model.extend('Nextcard.Models.Game',
 		return "not implemented";
 	},
 	
+	/**
+ 	 * Kollar om spelet är slut
+ 	 */
 	IsGameOver: function() {
 		return (this.m_deck.GetCardsLeft() === 1);
 	}

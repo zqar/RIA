@@ -1,4 +1,6 @@
 /**
+ * @tag controllers, home
+ * Controllerklass som hanterar kommunikation mellan views och models
  */
 $.Controller.extend('Nextcard.Controllers.Game',
 /* @Static */
@@ -8,7 +10,7 @@ $.Controller.extend('Nextcard.Controllers.Game',
 /* @Prototype */
 {
 	/**
-	* När sidan laddas
+	* När sidan laddas visas startsidan med olika val för spelet
 	*/
 	load: function () {
 		if (!$("#game").length) {
@@ -19,77 +21,63 @@ $.Controller.extend('Nextcard.Controllers.Game',
 
 	},
 	
-	//TA BORT!!!!!!!!!!!
-	'#testPlayers click': function() {
-		var players = $('input[@name=players]:radio:checked').val();
-		alert(players);
-	},
-	
-	//Funktion för att ändra antalet spelare genom radiobutton
+	/**
+	* Lyssnar på om användaren har ändrat antalet spelare genom radiobuttons
+	*/
 	'.selectPlayers change': function() {
 		//Hämta antalet valda spelare
-		var noOfPlayers = $('input[@name=players]:radio:checked').val();
-		//Uppdatera vyn
-		$('#playerNames').html(this.view('inputPlayers', { noOfPlayers: noOfPlayers }));
-		//alert($('input[@name=players]:radio:checked').val());
+		var noOfPlayers = $('input[name="players"]:radio:checked').val();
+		//Uppdatera vyn med en textbox för namnet för varje spelare
+		$('#playerInputDiv').html(this.view('inputPlayers', { noOfPlayers: noOfPlayers }));
 	},
 	
-	//Funktion för att 
+	/**
+	* Lyssnar på om användaren har klickat på en textbox för spelarnamn och isf markerar texten i textboxen
+	* @param {jQuery} el Textboxen som användaren har klickat på
+	*/
+	'.playerNameInput click': function(el) {
+		el.focus();
+		el.select();
+	},
+	
+	/**
+	* Lyssnar på om användaren har klickat på knappen för att skapa ett nytt spel
+	*/
 	'#startGame click': function() {
-		var players = ["anders", "peter"];
-		//for (var i = 0, j = ;)
-		this.startGame(players);
+		var players = [];
+		
+		//Hämta varje spelares namn och lägg in i players-arrayen
+		$('#playerInputDiv .playerNameInput').each(function() {
+		    var name = $(this).val();
+			
+			players.push(name);
+		});
+		  
+		var switchIfCorrect = $('input[name="switchIfCorrect"]:radio:checked').val() === "yes";
+		
+		//alert(switchIfCorrect);
+		
+		this.startGame(players, switchIfCorrect);
 	},
 	
-	startGame: function(a_players) {
-		this.game = new Nextcard.Models.Game(a_players);
+	/**
+	* Funktion för att starta ett nytt spel
+	*/
+	startGame: function(a_players, a_switchIfCorrect) {
+		this.game = new Nextcard.Models.Game(a_players, a_switchIfCorrect);
 			
 		this.game.ResetDeck();
 		this.game.ResetScores();
 		
-		//$('#game').append($('<button/>').attr('id', 'button'));
-		/*$('#game').append($('<button/>').attr('id', 'listCards'));
-		$('#game').append($('<button type="button" id="over">Over</button>'));
-		$('#game').append($('<button type="button" id="under">Under</button>'));*/
-		
-		/*$('#game').append($('<p id="currentCard">Card: ' + this.game.GetNextCard().m_color + this.game.GetNextCard().m_value + '</p>'));
-		$('#game').append($('<p id="cardsLeft">Cards left: 52</p>'));
-		$('#game').append($('<div id="points"></div>'));*/
-		
-		/*$('#game').append($('<div id="player1">Player1</div>'));
-		$('#game').append($('<div id="player2">Player2</div>'));
-		$('#player1').append($('<p id="p1name">' + this.game.GetPlayer(0).m_name + '</p>'));
-		$('#player2').append($('<p id="p2name">' + this.game.GetPlayer(1).m_name + '</p>'));
-		$('#player1').append($('<p id="p1score">' + this.game.GetPlayer(0).m_score + '</p>'));
-		$('#player2').append($('<p id="p2score">' + this.game.GetPlayer(1).m_score + '</p>'));
-		console.log(this.game.m_deck.m_cards.length);
-		console.log(this.game.m_players.length);*/
-		
-		/*$('#game').append($('<div id="cardDiv"></div>'));
-		$('#game').append($('<div id="cardsLeftDiv"></div>'));
-		$('#game').append($('<div id="pointsDiv"></div>'));
-		$('#game').append($('<div id="playersDiv"></div>'));*/
-		
 		$('#game').html(this.view('playGame', { players: this.game.m_players, card: this.game.m_deck.GetNextCard(), cardsLeft: this.game.GetCardsLeft() }));
-		//$('#playersDiv').append(this.view('showplayers', { players: this.game.m_players }));
 	},
 	
+	/**
+	* Funktion som körs efter varje gissning
+	*/
 	Update: function(a_direction) {
 		var points = this.game.Select(a_direction);
-		/*$('#currentCard').html('Card: ' + this.game.GetNextCard().m_color + this.game.GetNextCard().m_value);
-		$('#cardsLeft').html('Cards left: ' + this.game.GetCardsLeft());
-		$('#points').html(points);*/
-		/*$('#p1score').html(this.game.GetPlayer(0).m_score);
-		$('#p2score').html(this.game.GetPlayer(1).m_score);
-		
-		if (this.game.GetPlayer(0).IsActive()) {
-			$('#player1').attr('class', 'active');
-			$('#player2').attr('class', 'inactive');
-		} else {
-			$('#player2').attr('class', 'active');
-			$('#player1').attr('class', 'inactive');
-		}*/
-		
+
 		if (this.game.IsGameOver() === true) {
 			console.log('game over!!!!!!!!!!!!!!!!!!!!');
 			$('#over').attr('disabled', 'disabled');
@@ -109,21 +97,48 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		$('#playersDiv').html(this.view('showPlayers', { players: this.game.m_players }));
 	},
 	
+	/**
+	* Lyssnar på om spelaren gissar över
+	*/
 	'#over click': function() {
 		this.Update("over");
 	},
 	
+	/**
+	* Lyssnar på om spelaren gissar under
+	*/
 	'#under click': function() {
 		this.Update("under");
 	},
 	
+	//Ta bort sen, bara test nu!!!!!!!!!
 	'#listCards click': function() {
 		for (var i = 0, j = this.game.m_deck.m_cards.length ; i < j ; i++) {
-			$('#game').append('<p>' + this.game.m_deck.m_cards[i].m_color + this.game.m_deck.m_cards[i].m_value + '</p>');
+			$('#game').append('<p>' + (i + 1) + ': ' + this.game.m_deck.m_cards[i].m_color + this.game.m_deck.m_cards[i].m_value + '</p>');
 		}
+	},
+	
+	/**
+	* Lyssnar på om spelaren klickat på "Restart" och startar om spelet
+	*/
+	'#restart click': function() {
+		var players = [];
+		
+		for (var i = 0, j = this.game.m_players.length ; i < j ; i++) {
+			players.push(this.game.GetPlayer(i).GetName());
+		}
+		
+		this.startGame(players, this.game.m_switchIfCorrect);
+	},
+	
+	/**
+	* Lyssnar på om användaren klickat på "Quit to menu" och visar startsidan
+	*/
+	'#quit click': function() {
+		$('#game').remove();
+		
+		this.load();
 	}
-	
-	
 	
 
 });

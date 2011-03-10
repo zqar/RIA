@@ -19,10 +19,18 @@ $.Class.extend('Nextcard.Models.Card',
 		this.m_color = a_color;
 	},
 	
+	/**
+ 	 * Hämtar kortets värde
+ 	 * @return {Number} Returnerar kortets värde
+ 	 */
 	GetValue: function() {
 		return this.m_value;
 	},
 	
+	/**
+ 	 * Hämtar kortets färg
+ 	 * @return {String} Returnerar kortets värde
+ 	 */
 	GetColor: function() {
 		return this.m_color;
 	}

@@ -9,12 +9,11 @@ steal.plugins(
 	
 	.css('nextcard')	// loads styles
 
-	.resources()					// 3rd party script's (like jQueryUI), in resources folder
+	.resources('jquery-ui-1.8.10.custom.min')					// 3rd party script's (like jQueryUI), in resources folder
 
 	.models('game', 'player', 'deck', 'card')						// loads files in models folder 
 
 	.controllers('game')					// loads files in controllers folder
 
-	.views(); 					// adds views to be added to build
-
-//alert('nextcard.js funkar');
+	.views('//nextcard/gameOver.ejs', '//nextcard/init.ejs', '//nextcard/inputPlayers.ejs', 
+			'//nextcard/playGame.ejs', '//nextcard/showCardsLeft.ejs', '//nextcard/showPlayers.ejs'); 	// adds views to be added to build

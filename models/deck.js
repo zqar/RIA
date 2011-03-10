@@ -14,22 +14,16 @@ $.Model.extend('Nextcard.Models.Deck',
  	 */
 	init: function () {
 		this.m_cards = [];
+		
 		var colors = ["h", "s", "c", "d"]
+		
 		for (var i = 1 ; i < 14 ; i++) {
 			for (var j = 0, k = colors.length ; j < k ; j++) {
 				this.m_cards.push(new Nextcard.Models.Card(i, colors[j]));
-				//console.log("skapade kortet: " + colors[j] + i);
 			}
 		}
 		
-		console.log("kortlek skapad");
-		
 		this.Shuffle();
-		console.log("kortlek blandad");
-	},
-	
-	AddCard: function(a_card) {
-		return "not implemented";
 	},
 	
 	/**
@@ -49,9 +43,9 @@ $.Model.extend('Nextcard.Models.Deck',
 	
 	/**
  	 * Funktion för att hämta det översta kortet
+ 	 * @return {Object} Returnerar Deck-objektets översta Card-objekt
  	 */
 	GetNextCard: function() {
-		console.log("hämta kortet " + this.m_cards[this.m_cards.length-1].m_color + this.m_cards[this.m_cards.length-1].m_value);//GetValue);
 		return this.m_cards[this.m_cards.length-1];
 	},
 	
@@ -59,12 +53,12 @@ $.Model.extend('Nextcard.Models.Deck',
  	 * Funktion för att ta bort det översta kortet
  	 */
 	RemoveNextCard: function() {
-		console.log("Tar bort kortet " + this.m_cards[this.m_cards.length-1].m_color + this.m_cards[this.m_cards.length-1].m_value);
 		this.m_cards.splice(this.m_cards.length-1, 1);
 	},
 	
 	/**
  	 * Funktion för att hämta antalet kort som finns kvar i kortleken
+ 	 * @return {Number} Returnerar hur många kort Deck-objektet innehåller
  	 */
 	GetCardsLeft: function() {
 		return this.m_cards.length;

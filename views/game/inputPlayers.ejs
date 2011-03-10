@@ -1,5 +1,5 @@
 <% for (var i = 1 ; i <= noOfPlayers ; i++) {%>
-	Player <%=i%>: <input type="text" id="playerNameInput<%=i%>" class="playerNameInput" value="Player <%=i%>"/>
+	Player <%=i%>: <input type="text" id="playerNameInput<%=i%>" class="playerNameInput" value="Player <%=i%>" maxlength="10"/>
 	<br /><br />
 <%}%>
 
@@ -7,9 +7,9 @@
 <div id="rulesDiv">
 	Choose when to switch player:
 	<br />
-	<input type="radio" name="switchIfCorrect" value="yes" id="switchRule1" class="selectRules" checked="checked" /><label for="switchRule1">Switch on every turn</label>
+	<input type="radio" name="switchOption" value="always" id="switchOption1" class="switchOption" checked="checked" /><label for="switchOption1">Switch on every turn</label>
 	<br />
-	<input type="radio" name="switchIfCorrect" value="no" id="switchRule2" class="selectRules" /><label for="switchRule2">Switch on wrong choice</label>
+	<input type="radio" name="switchOption" value="ifIncorrect" id="switchOption2" class="switchOption" /><label for="switchOption2">Switch on wrong choice</label>
 	<br />
 </div>
 <%}%>

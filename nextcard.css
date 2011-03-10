@@ -1,10 +1,48 @@
 body {font-family: verdana}
 td {padding: 3px;}
 
+#game {
+	margin: 100px;
+	width: 400px;
+	background-color: #b7ffb2;
+}
+
+#cardWrapperDiv {
+	height: 140px;
+	width: 200px;
+	background-color: green;
+}
+
+#cardDiv {
+	margin: 0 50px;
+	width: 100px;
+}
+
 .active {
-	background-color: gray;
+	background-color: #c9c9c9;
 }
 
 .inactive {
 	background-color: none;
+}
+
+#pointsWrapperDiv {
+	height: 50px;
+	width: 200px;
+	background-color: #e4e4e4;
+}
+
+#pointsDiv {
+	margin: 0 50px 0 100px;
+	width: 80px;
+	font-size: 35px;
+	background-color: #ffe191;
+}
+
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
 }

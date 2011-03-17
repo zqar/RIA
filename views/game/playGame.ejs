@@ -1,26 +1,33 @@
-<div id="playersDiv">
-	<%= $.View('//nextcard/views/game/showPlayers',{players: players})%>
-</div>
-
-<div id="cardWrapperDiv">
-	<div id="cardDiv">
-		<img id="cardImg" src="images/<%= card.GetColor() + card.GetValue()  %>.png">
-	</div>
-</div>
-
-<div id="pointsWrapperDiv">
-	<div id="pointsDiv">
-	</div>
-</div>
-<div id="gameInfo">
-	<div id="cardsLeftDiv">
-		<%= $.View('//nextcard/views/game/showCardsLeft',{cardsLeft: cardsLeft})%>
+<div id="playGame">
+	<div id="cardWrapperDiv">
+		<div id="cardDiv0" style="display: none;">
+			<img id="cardImg0" />
+		</div>
+		<div id="cardDiv1">
+			<img id="cardImg1" src="images/<%= card.GetColor() + card.GetValue()  %>.png" />
+		</div>
 	</div>
 	
-	<button type="button" id="under">Under</button>
-	<button type="button" id="over">Over</button>
+	<div id="gameInfo">
+		<div id="cardsLeftDiv">
+			<%= $.View('//nextcard/views/game/showCardsLeft',{cardsLeft: cardsLeft})%>
+		</div>
+		<div id="guessButtonDiv">
+			<button type="button" class="button" id="under">Lower</button>
+			<button type="button" class="button" id="over">Higher</button>
+		</div>
+	</div>
+	
+	<div id="pointsWrapperDiv">
+		<div id="pointsDiv">
+		</div>
+	</div>
+	
+	<div id="playersDiv">
+		<%= $.View('//nextcard/views/game/showPlayers',{players: players})%>
+	</div>
+	
+	<br /><br />
+	
+	<!--<button type="button" id="listCards">List cards</button>-->
 </div>
-
-<br /><br />
-
-<!--<button type="button" id="listCards">List cards</button>-->

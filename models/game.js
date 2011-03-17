@@ -14,13 +14,13 @@ $.Model.extend('Nextcard.Models.Game',
  	 * @param {Array} a_players En array som innehåller spelarnas namn
  	 * @param {Function} a_switchRule Funktion innehållandes logiken för när turordningen skiftar
  	 */
-	init: function (a_players, a_switchRule) {
+	init: function (a_playerNames, a_switchRule) {
 		this.m_players = [];
 		this.m_switchRule = a_switchRule;
 		
 		//Skapa Player-objekt
-		for (var i = 0, j = a_players.length ; i < j ; i++) {
-			this.m_players[i] = new Nextcard.Models.Player(a_players[i]);
+		for (var i = 0, j = a_playerNames.length ; i < j ; i++) {
+			this.m_players[i] = new Nextcard.Models.Player(a_playerNames[i]);
 		}
 		
 		//Starta spelet
@@ -106,12 +106,8 @@ $.Model.extend('Nextcard.Models.Game',
 		}
 		
 		//Byt aktiv spelare
-		var nextPlayerIndex = this.m_currentPlayer + 1;
+		var nextPlayerIndex = (this.m_currentPlayer + 1) % this.m_noOfPlayers;
 
-		if (nextPlayerIndex == this.m_players.length) {
-			nextPlayerIndex = 0;
-		}
-		
 		this.m_players[this.m_currentPlayer].SetActive(false);
 		this.m_players[nextPlayerIndex].SetActive(true);
 		
@@ -174,6 +170,14 @@ $.Model.extend('Nextcard.Models.Game',
  	 */
 	GetPlayer: function(a_index) {
 		return this.m_players[a_index];
+	},
+	
+	/**
+ 	 * Hämtar indexet för spelaren som har turen
+ 	 * @return {Number} Returnerar indexet för aktuellt spelare
+ 	 */
+	GetCurrentPlayerIndex: function() {
+		return this.m_currentPlayer;
 	},
 	
 	/**

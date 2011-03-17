@@ -1,16 +1,66 @@
-body {font-family: verdana}
-td {padding: 3px;}
+body {
+	font-family: verdana;
+	color: white;
+	font-size: 14px;
+}
+
+#nextcard {
+	height: 480px;
+	width: 640px;
+	background-image: url("images/bg.jpg");
+}
+
+#logo {
+	margin: 0 auto;
+	padding: 20px 0;
+	width: 390px;
+}
 
 #game {
-	margin: 100px;
-	width: 400px;
-	background-color: #b7ffb2;
+	margin: 0px;
+	width: 640px;
+}
+
+#menu {
+	width: 280px;
+	margin-left: 100px;
+	color: white;
+	float: left;
+}
+
+#howToPlay {
+	margin-right: 50px;
+	margin-bottom: 20px;
+	padding: 10px;
+	border: solid white 1px;
+	width: 140px;
+	float: right;
+	font-size: 11px;
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+}
+
+#controls {
+	margin-right: 50px;
+	padding: 10px;
+	border: solid white 1px;
+	width: 140px;
+	float: right;
+	font-size: 11px;
+	clear: right;
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+}
+
+#playGame {
+	margin: 0 auto;
+	width: 450px;
 }
 
 #cardWrapperDiv {
 	height: 140px;
 	width: 200px;
-	background-color: green;
+	float: left;
 }
 
 #cardDiv {
@@ -18,31 +68,162 @@ td {padding: 3px;}
 	width: 100px;
 }
 
-.active {
-	background-color: #c9c9c9;
+#cardDiv1, #cardDiv0 {
+	margin: 0 50px;
+	width: 100px;
 }
 
-.inactive {
-	background-color: none;
+#gameInfo {
+	float: left;
+	width: 230px;
+	padding-top: 20px;
+	padding-left: 10px;
+}
+
+#gameInfo .big {
+	font-size: 20px;
+}
+
+#gameInfo .biggest {
+	font-size: 40px;
+}
+
+#guessButtonDiv button {
+	margin: 30px 10px;
 }
 
 #pointsWrapperDiv {
 	height: 50px;
-	width: 200px;
-	background-color: #e4e4e4;
+	width: 20px;
+	clear: both;
+	float: left;
 }
 
 #pointsDiv {
-	margin: 0 50px 0 100px;
-	width: 80px;
-	font-size: 35px;
-	background-color: #ffe191;
+	margin: 15px;
+	min-width: 80px;
+	font-size: 45px;
+	font-weight: bold;
+	text-align: center;
 }
 
-.correct {
-	color: green;
+#playersDiv {
+	float: right;
+	margin-top: 20px;
+	width: 290px;
+	font-size: 20px;
 }
 
-.incorrect {
-	color: red;
+div.active, div.inactive {
+	width: 280px;
+	height: 20px;
+	line-height: 20px;
+	padding: 10px;
+}
+
+div.active {
+	background: #ffebb5 url("images/overlay.png") repeat-x; 
+	display: inline-block; 
+	color: #525252;
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	font-size: 18px; 
+	font-weight: bold; 
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+}
+
+div.inactive {
+	background-color: none;
+}
+
+div.playerName {
+	width: 140px;
+	padding-left: 20px;
+	float: left;
+}
+
+div.score {
+	width: 120px;
+	float: left;
+}
+
+div.correct, div.incorrect {
+	background-repeat: no-repeat;
+	width: 94px;
+}
+
+span.pointsSpan {
+}
+
+div.correct {
+	color: #3dda39;
+}
+
+div.incorrect {
+	color: #d82727;
+}
+
+.right {
+	float: right;
+}
+
+/*buttons*/
+
+button { 
+	margin: 0; 
+	padding: 0; 
+	border: 0; 
+	font-weight: normal; 
+	font-style: normal; 
+	font-size: 100%; 
+	line-height: 1; 
+	font-family: inherit; 
+	text-align: left; 
+}
+
+.button {
+	background: #c16d0a url("images/overlay.png") repeat-x; 
+	display: inline-block; 
+	padding: 5px 10px 6px; 
+	color: #fff; 
+	text-decoration: none;
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	position: relative;
+	cursor: pointer;
+	font-size: 14px; 
+	padding: 8px 14px 9px;
+}
+
+.buttonSpecial {
+	background: #a84215;
+	margin-right: 8px;
+}
+
+.button:hover {
+	background-color: #872300;
+	color: #fff;
+ }
+
+.button:active	{ 
+	top: 1px;
+}
+
+.button:focus {
+	background-color: #872300;
+	color: #fff;
+	border: none;
+    outline: none;
+}
+
+.button::-moz-focus-inner { 
+	border: 0; 
 }

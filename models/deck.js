@@ -53,7 +53,7 @@ $.Model.extend('Nextcard.Models.Deck',
  	 * Funktion för att ta bort det översta kortet
  	 */
 	RemoveNextCard: function() {
-		this.m_cards.splice(this.m_cards.length-1, 1);
+		this.m_cards.pop();
 	},
 	
 	/**

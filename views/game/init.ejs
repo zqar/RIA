@@ -1,18 +1,46 @@
-Choose number of players:
-<br />
-<input type="radio" name="players" value="1" id="select1player" class="selectPlayers" checked="checked" /><label for="select1player">1 Player</label>
-<br />
-<input type="radio" name="players" value="2" id="select2players" class="selectPlayers" /><label for="select2players">2 Players</label>
-<br />
-<input type="radio" name="players" value="3" id="select3players" class="selectPlayers" /><label for="select3players">3 Players</label>
-<br /><br />
-Choose player names:
-<div id="playerInputDiv">
-	<%= $.View('//nextcard/views/game/inputPlayers',{noOfPlayers: 1})%>
+<div id="menu">
+	<strong>Choose number of players</strong>:
+	<br />
+	<input type="radio" name="players" value="1" id="select1player" class="selectPlayers" checked="checked" /><label for="select1player">1 Player</label>
+	<br />
+	<input type="radio" name="players" value="2" id="select2players" class="selectPlayers" /><label for="select2players">2 Players</label>
+	<br />
+	<input type="radio" name="players" value="3" id="select3players" class="selectPlayers" /><label for="select3players">3 Players</label>
+	<br /><br />
+	<strong>Choose player names:</strong>
+	<div id="playerInputDiv">
+		<%= $.View('//nextcard/views/game/inputPlayers',{noOfPlayers: 1})%>
+	</div>
+	<br />
+	<div>
+		<button id="startGame" class="right button">Start Game</button>
+	</div>
 </div>
 
-<div>
-	<button type="button" id="startGame">Start Game</button>
+<div id="howToPlay">
+	<strong>How to play</strong>
+	<br /><br />
+	Guess wether the next card is higher or lower than the current card!
 </div>
 
-
+<div id="controls">
+	<strong>Keyboard-controls</strong>
+	<br /><br />
+	Player 1:
+	<br />
+	A = Higher
+	<br />
+	Z = Lower
+	<br /><br />
+	Player 2:
+	<br />
+	&uarr; = Higher
+	<br />
+	&darr; = Lower
+	<br /><br />
+	Player 3:
+	<br />
+	8 = Higher
+	<br />
+	2 = Lower	
+</div>

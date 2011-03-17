@@ -26,11 +26,14 @@ $.Controller.extend('Nextcard.Controllers.Game',
 	* När sidan laddas visas startsidan med olika val för spelet
 	*/
 	load: function () {
-		if (!$("#game").length) {
-			$(document.body).append($('<div/>').attr('id', 'game'));
+		if (!$("#nextcard").length) {
+			$(document.body).append($('<div/>').attr('id', 'nextcard'));
+			$('#nextcard').append(this.view('logo', { }));
 		}
-		
+		$("#nextcard").append($('<div/>').attr('id', 'game'));
 		$('#game').append(this.view('init', { }));
+		
+		
 	},
 	
 	/**
@@ -41,8 +44,56 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		//Skapa ett nytt game och skicka med spelarna och switchRule
   		this.game = new Nextcard.Models.Game(a_players, Nextcard.Controllers.Game.switchRules[a_switchRule]);
 		
+		this.paused = false;
+		
 		//Visa vyn för spelet
 		$('#game').html(this.view('playGame', { players: this.game.m_players, card: this.game.GetNextCard(), cardsLeft: this.game.GetCardsLeft() }));
+		
+		this.BindControls();
+	},
+	
+	/**
+	* Funktion för att binda tangentbordskommandon
+	*/
+	BindControls: function(){
+		
+		that = this;
+		
+		$(document).bind('keyup', 'a', function(){
+			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 0) {
+				that.Update("over")
+			}
+		});
+		
+		$(document).bind('keyup', 'z', function(){
+			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 0) {
+				that.Update("under")
+			}
+		});
+		
+		$(document).bind('keydown', 'up', function(){
+			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 1) {
+				that.Update("over")
+			}
+		});
+		
+		$(document).bind('keydown', 'down', function(){
+			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 1) {
+				that.Update("under")
+			}
+		});
+		
+		$(document).bind('keydown', '8', function(){
+			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 2) {
+				that.Update("over")
+			}
+		});
+		
+		$(document).bind('keydown', '2', function(){
+			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 2) {
+				that.Update("under")
+			}
+		});
 	},
 	
 	/**
@@ -55,6 +106,9 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		$('#over').attr('disabled', 'disabled');
 		$('#under').attr('disabled', 'disabled');
 		
+		//Pausa spelet för tangentbordsstyrning
+		this.paused = true;
+		
 		//Räkna ut antal poäng för gissningen
 		var points = this.game.Select(a_direction);
 		
@@ -64,8 +118,19 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		//View som uppdaterar spelarnas poäng
 		$('#playersDiv').html(this.view('showPlayers', { players: this.game.m_players }));
 		
-		//Göm kortet
-		$( "#cardDiv" ).hide( 'slide', {direction: 'right'}, 500, hideCallback);
+		//Hämtar div som visar aktuella kortet, samt div som visar det nästa kortet
+		var currentIndex = this.game.GetCardsLeft() % 2;
+		var nextIndex = (currentIndex + 1) % 2;
+		
+		var currentCardDiv = $( "#cardDiv" + currentIndex);
+		var nextCardDiv = $( "#cardDiv" + nextIndex);
+		
+		//Byt bild på kort
+		var nextCardPath = "images/" + this.game.GetNextCard().GetColor() + this.game.GetNextCard().GetValue() + ".png";
+		$( "#cardImg" + nextIndex).attr('src', nextCardPath);
+		
+		//Göm div med det aktuella kortet
+		currentCardDiv.toggle( 'slide', {direction: 'right'}, 500, hideCallback);
 		
 		//Spara this i variabeln that så att den kan nås i callback-funktionerna nedan
 		that = this;
@@ -73,21 +138,21 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		//Callback-funktion som körs efter att kortet gömts
 		function hideCallback() {
 			
-			//Byt bild på kort
-			var nextCardPath = "images/" + that.game.GetNextCard().GetColor() + that.game.GetNextCard().GetValue() + ".png";
-			$("#cardImg").attr('src', nextCardPath);
-			
-			//Visa det nya kortet
-			$("#cardDiv").show('slide', {direction: 'left'}, 300, showCallback);
+			//Visa div med det nya kortet
+			nextCardDiv.toggle('slide', {direction: 'left'}, 500, showCallback);
 
 			//View som uppdaterar antal poäng för gissningen och sedan gömmer det
 			if (points > 0){
-				$('#pointsDiv').html('<span class="correct">+' + points + '</span>');
+				$('#pointsDiv').attr('class', 'correct');
+				$('#pointsDiv').html('+' + points + '<img src="images/correct.png"/>');
 			} else {
-				$('#pointsDiv').html('<span class="incorrect">' + points + '</span>');
+				$('#pointsDiv').attr('class', 'incorrect');
+				$('#pointsDiv').html(points + '<img src="images/incorrect.png"/>');
 			}
 			$("#pointsDiv").show();
-			$("#pointsDiv").hide('fade', {}, 1000);
+			setTimeout(function(){
+				$("#pointsDiv").hide('fade', {}, 500);
+			}, 500);
 		}
 		
 		//Callback-funktion som körs efter att det nya kortet har visats
@@ -96,6 +161,7 @@ $.Controller.extend('Nextcard.Controllers.Game',
 			if (that.game.IsGameOver() === false) {
 				$('#over').removeAttr("disabled");
 				$('#under').removeAttr("disabled");
+				that.paused = false;
 			} else {
 				that.GameOver();
 			}
@@ -169,6 +235,7 @@ $.Controller.extend('Nextcard.Controllers.Game',
 	*/
 	'#over click': function() {
 		this.Update("over");
+		$('#over').blur();
 	},
 	
 	/**
@@ -176,6 +243,7 @@ $.Controller.extend('Nextcard.Controllers.Game',
 	*/
 	'#under click': function() {
 		this.Update("under");
+		$('#under').blur();
 	},
 	
 	/**
@@ -185,6 +253,7 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		
 		this.game.RestartGame();
 		$('#game').html(this.view('playGame', { players: this.game.m_players, card: this.game.GetNextCard(), cardsLeft: this.game.GetCardsLeft() }));
+		this.paused = false;
 	},
 	
 	/**
@@ -195,11 +264,4 @@ $.Controller.extend('Nextcard.Controllers.Game',
 		
 		this.load();
 	}
-	
-	/*//Test för att kolla korten i kortleken, måste även låsa upp knappen i playGame.ejs
-	'#listCards click': function() {
-		for (var i = 0, j = this.game.m_deck.m_cards.length ; i < j ; i++) {
-			$('#game').append('<p>' + (i + 1) + ': ' + this.game.m_deck.m_cards[i].m_color + this.game.m_deck.m_cards[i].m_value + '</p>');
-		}
-	}*/
 });

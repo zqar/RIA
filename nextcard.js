@@ -1,3 +1,14 @@
+/*
+ * @page nextcard Nextcard
+ * @tag home
+ *
+ * ###Nextcard
+ *  
+ * Nextcard har ett antal klasser:
+ *  
+ * * Customer 
+ * * Order 
+ */
 steal.plugins(	
 	'jquery/controller',			// a widget factory
 	'jquery/controller/subscribe',	// subscribe to OpenAjax.hub
@@ -9,7 +20,7 @@ steal.plugins(
 	
 	.css('nextcard')	// loads styles
 
-	.resources('jquery-ui-1.8.10.custom.min')					// 3rd party script's (like jQueryUI), in resources folder
+	.resources('jquery-ui-1.8.10.custom.min', 'jquery.hotkeys')					// 3rd party script's (like jQueryUI), in resources folder
 
 	.models('game', 'player', 'deck', 'card')						// loads files in models folder 
 

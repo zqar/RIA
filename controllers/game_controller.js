@@ -57,41 +57,60 @@ $.Controller.extend('Nextcard.Controllers.Game',
 	*/
 	BindControls: function(){
 		
+		//Gissa lägre
+		function keyUnder() {
+			that.Update("under");
+			$('#under').addClass('buttonFocus');
+			setTimeout(function(){
+				$('#under').removeClass('buttonFocus');
+			}, 500);
+		}
+		
+		
+		//Gissa högre
+		function keyOver() {
+			that.Update("over");
+			$('#over').addClass('buttonFocus');
+			setTimeout(function(){
+				$('#over').removeClass('buttonFocus');
+			}, 500);
+		}
+		
 		that = this;
 		
 		$(document).bind('keyup', 'a', function(){
 			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 0) {
-				that.Update("over")
+				keyOver();
 			}
 		});
 		
 		$(document).bind('keyup', 'z', function(){
 			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 0) {
-				that.Update("under")
+				keyUnder();
 			}
 		});
 		
 		$(document).bind('keydown', 'up', function(){
 			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 1) {
-				that.Update("over")
+				keyOver();
 			}
 		});
 		
 		$(document).bind('keydown', 'down', function(){
 			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 1) {
-				that.Update("under")
+				keyUnder();
 			}
 		});
 		
 		$(document).bind('keydown', '8', function(){
 			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 2) {
-				that.Update("over")
+				keyOver();
 			}
 		});
 		
 		$(document).bind('keydown', '2', function(){
 			if (that.paused === false && that.game.GetCurrentPlayerIndex() === 2) {
-				that.Update("under")
+				keyUnder();
 			}
 		});
 	},

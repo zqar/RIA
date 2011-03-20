@@ -217,7 +217,7 @@ button {
 	top: 1px;
 }
 
-.button:focus {
+.button:focus, .buttonFocus {
 	background-color: #872300;
 	color: #fff;
 	border: none;
